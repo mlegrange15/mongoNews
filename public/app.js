@@ -1,11 +1,14 @@
 // Grab the articles as a json
 $.getJSON("/articles", function(data) {
+
     // For each one
     for (var i = 0; i < data.length; i++) {
       // Display the apropos information on the page    
-      $("#articles").append('<div class="card mb-3"><div class=card-body><h4>' + data[i].title + '</h4><p>' + data[i].summary + '</p><a href=' + data[i].link + ' target=blank>Link To Article</a></div><button type=button class="btn btn-dark" id="add-comment" data-id=' + data[i]._id + '>Comment</button><p> COMMENTS: ' + data[i].comment + '</p></div>');
-
-
+      $("#articles").append('<div class="card mb-3"><div class=card-body><h4>'
+      + data[i].title + '</h4><p>' + data[i].summary + '</p><a href='
+      + data[i].link + ' target=blank>Link To Article</a></div><button type=button class="btn btn-dark" id="add-comment" data-id=' +
+       data[i]._id + '>Comment</button><p> COMMENTS:<br> ' + (data[i].comment ? data[i].comment.title : '') + '<br>' 
+       + (data[i].comment ? data[i].comment.body : '') +'</p></div>');
     }
   });
   
@@ -15,10 +18,7 @@ $.getJSON("/articles", function(data) {
     // Empty the comments from the comment section
     $("#comments").empty();
     // Save the id from the p tag
-    var thisId = $(this).attr("data-id");
-
-    console.log($(this).attr("data-id"));
-    
+    var thisId = $(this).attr("data-id");    
   
     // Now make an ajax call for the Article
     $.ajax({
@@ -36,6 +36,7 @@ $.getJSON("/articles", function(data) {
         $("#comments").append("<textarea id='bodyinput' name='body'></textarea>");
         // A button to submit a new comment, with the id of the article saved to it
         $("#comments").append("<button data-id='" + data._id + "' id='savecomment'>Save Comment</button>");
+       
   
         // If there's a comment in the article
         if (data.comment) {
@@ -65,8 +66,8 @@ $.getJSON("/articles", function(data) {
     })
       // With that done
       .then(function(data) {
-        // Log the response
-        console.log(data);
+
+
         // Empty the comments section
         $("#comments").empty();
       });
